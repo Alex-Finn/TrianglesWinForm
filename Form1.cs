@@ -15,9 +15,9 @@ namespace TrianglesWinForm
 {
 	public partial class Form1 : Form
 	{
-		List<Triangle> triangles;
-		List<Point> points;
-		bool doPaint;
+		private List<Triangle> triangles;
+		private List<Point> points;
+		private bool doPaint;
 		public Form1()
 		{
 			doPaint = false;
@@ -28,11 +28,11 @@ namespace TrianglesWinForm
 
 		private void ReadData()
 		{
-			triangles.Add(new Triangle(
+			/*triangles.Add(new Triangle(
 				new Point(300, 300),
 				new Point(450, 200),
 				new Point(100, 150)));
-
+			*/
 
 
 			points.Add(new Point(100, 100));
@@ -64,7 +64,7 @@ namespace TrianglesWinForm
 
 
 
-				e.Graphics.DrawLine(blackPen, points[0], points[1]);
+				//e.Graphics.DrawLine(blackPen, points[0], points[1]);
 
 				DrawTriangles(e);
 
@@ -99,17 +99,35 @@ namespace TrianglesWinForm
 
 			try
 			{
-				using ( StreamReader sr = new StreamReader(filePath, System.Text.Encoding.Default) )
+				using ( OpenFileDialog openFileDialog = new OpenFileDialog() )
 				{
-					string line;
-					trianglesCount = rowCount = Int32.Parse(sr.ReadLine());
-					while((line = sr.ReadLine()) != null && rowCount > 0)
+					openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+					openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+					openFileDialog.FilterIndex = 2;
+					openFileDialog.RestoreDirectory = true;
+
+					if ( openFileDialog.ShowDialog() == DialogResult.OK )
 					{
-						line.Split()
+						//Get the path of specified file
+						filePath = openFileDialog.FileName;
+
+						//Read the contents of the file into a stream
+						var fileStream = openFileDialog.OpenFile();
+
+						using ( StreamReader sr = new StreamReader(fileStream) )
+						{
+							string line;
+							trianglesCount = rowCount = Int32.Parse(sr.ReadLine());
+
+							while ( ( line = sr.ReadLine() ) != null && rowCount > 0 )
+							{
+								triangles.Add(new Triangle(line));
+							}
+						}
 					}
 				}
 			}
-			catch(Exception ex)
+			catch ( Exception ex )
 			{
 				MessageBox.Show(ex.Message);
 			}

@@ -54,7 +54,7 @@ namespace TrianglesWinForm.Models
 
 		public Triangle(string row)
 		{
-			string pattern = @"";
+			string pattern = @"\s+";
 			//string[] coords = row.Split(new char[] { ' ' } , StringSplitOptions.RemoveEmptyEntries);
 			string[] coords = Regex.Split(row, pattern);
 
