@@ -18,28 +18,23 @@ namespace TrianglesWinForm
 		private List<Triangle> triangles;
 		private List<Point> points;
 		private bool doPaint;
+
 		public Form1()
 		{
+			InitializeComponent();
 			doPaint = false;
 			triangles = new List<Triangle>();
 			points = new List<Point>();
-			InitializeComponent();
+			
+			pb_pictureBox.BackColor = Color.GhostWhite;
 		}
 
 		private void ReadData()
 		{
-			/*triangles.Add(new Triangle(
-				new Point(300, 300),
-				new Point(450, 200),
-				new Point(100, 150)));
-			*/
-
-
-			points.Add(new Point(100, 100));
-			points.Add(new Point(200, 200));
+			//	points.Add(new Point(100, 100));
+			//	points.Add(new Point(200, 200));
 
 			ReadFile();
-
 		}
 
 		private void Btn_read_Click( object sender, EventArgs e )
@@ -47,8 +42,6 @@ namespace TrianglesWinForm
 			doPaint = true;
 			ReadData();
 			DoPaintOnPictureBox();
-
-
 		}
 
 		private void DoPaintOnPictureBox()
@@ -60,15 +53,7 @@ namespace TrianglesWinForm
 		{
 			if ( doPaint == true )
 			{
-				Pen blackPen = new Pen(Color.Black, 5);
-
-
-
-				//e.Graphics.DrawLine(blackPen, points[0], points[1]);
-
 				DrawTriangles(e);
-
-
 			}
 			else
 			{
