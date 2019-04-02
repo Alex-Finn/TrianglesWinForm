@@ -58,6 +58,7 @@ namespace TrianglesWinForm
 			else
 			{
 				e.Graphics.Clear(pb_pictureBox.BackColor);
+				triangles.Clear();
 			}
 		}
 
@@ -77,44 +78,38 @@ namespace TrianglesWinForm
 
 		private void ReadFile()
 		{
-			string filePath = string.Empty;
-			string fileContent = string.Empty;
-			int trianglesCount = 0;
-			int rowCount = 0;
-
 			try
 			{
 				using ( OpenFileDialog openFileDialog = new OpenFileDialog() )
 				{
 					openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
 					openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-					openFileDialog.FilterIndex = 2;
+					openFileDialog.FilterIndex = 1;
 					openFileDialog.RestoreDirectory = true;
 
 					if ( openFileDialog.ShowDialog() == DialogResult.OK )
 					{
-						//Get the path of specified file
-						filePath = openFileDialog.FileName;
-
 						//Read the contents of the file into a stream
 						var fileStream = openFileDialog.OpenFile();
 
 						using ( StreamReader sr = new StreamReader(fileStream) )
 						{
+							triangles.Clear();
 							string line;
-							trianglesCount = rowCount = Int32.Parse(sr.ReadLine());
+							int rowCount = Int32.Parse(sr.ReadLine());
 
 							while ( ( line = sr.ReadLine() ) != null && rowCount > 0 )
 							{
 								triangles.Add(new Triangle(line));
+								rowCount--;
 							}
 						}
 					}
 				}
 			}
 			catch ( Exception ex )
-			{
-				MessageBox.Show(ex.Message);
+			{			
+				MessageBox.Show($"При чтении файла возникла ошибка\nВозможно выбран файл некорректного формата", "Ошибка чтения");
 			}
 		}
 	}
