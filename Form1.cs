@@ -112,5 +112,12 @@ namespace TrianglesWinForm
 				MessageBox.Show($"При чтении файла возникла ошибка\nВозможно выбран файл некорректного формата", "Ошибка чтения");
 			}
 		}
+
+		private void pb_pictureBox_DoubleClick( object sender, EventArgs e )
+		{
+			doPaint = true;
+			ReadData();
+			DoPaintOnPictureBox();
+		}
 	}
 }

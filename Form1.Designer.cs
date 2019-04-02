@@ -37,9 +37,10 @@
 			// 
 			// btn_read
 			// 
-			this.btn_read.Location = new System.Drawing.Point(13, 13);
+			this.btn_read.Location = new System.Drawing.Point(10, 11);
+			this.btn_read.Margin = new System.Windows.Forms.Padding(2);
 			this.btn_read.Name = "btn_read";
-			this.btn_read.Size = new System.Drawing.Size(75, 23);
+			this.btn_read.Size = new System.Drawing.Size(56, 19);
 			this.btn_read.TabIndex = 0;
 			this.btn_read.Text = "Read";
 			this.btn_read.UseVisualStyleBackColor = true;
@@ -48,27 +49,32 @@
 			// tb_result
 			// 
 			this.tb_result.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.tb_result.Location = new System.Drawing.Point(13, 43);
+			this.tb_result.Location = new System.Drawing.Point(10, 35);
+			this.tb_result.Margin = new System.Windows.Forms.Padding(2);
 			this.tb_result.Name = "tb_result";
-			this.tb_result.Size = new System.Drawing.Size(75, 21);
+			this.tb_result.Size = new System.Drawing.Size(57, 18);
 			this.tb_result.TabIndex = 1;
 			this.tb_result.Text = "Press \"Read\"";
 			this.tb_result.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// pb_pictureBox
 			// 
-			this.pb_pictureBox.Location = new System.Drawing.Point(95, 13);
+			this.pb_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pb_pictureBox.Location = new System.Drawing.Point(71, 11);
+			this.pb_pictureBox.Margin = new System.Windows.Forms.Padding(2);
 			this.pb_pictureBox.Name = "pb_pictureBox";
 			this.pb_pictureBox.Size = new System.Drawing.Size(1000, 1000);
 			this.pb_pictureBox.TabIndex = 2;
 			this.pb_pictureBox.TabStop = false;
 			this.pb_pictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.Pb_pictureBox_Paint);
+			this.pb_pictureBox.DoubleClick += new System.EventHandler(this.pb_pictureBox_DoubleClick);
 			// 
 			// btn_clear
 			// 
-			this.btn_clear.Location = new System.Drawing.Point(13, 414);
+			this.btn_clear.Location = new System.Drawing.Point(10, 336);
+			this.btn_clear.Margin = new System.Windows.Forms.Padding(2);
 			this.btn_clear.Name = "btn_clear";
-			this.btn_clear.Size = new System.Drawing.Size(75, 23);
+			this.btn_clear.Size = new System.Drawing.Size(56, 19);
 			this.btn_clear.TabIndex = 3;
 			this.btn_clear.Text = "Clear";
 			this.btn_clear.UseVisualStyleBackColor = true;
@@ -76,15 +82,21 @@
 			// 
 			// Form1
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AllowDrop = true;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1111, 1028);
+			this.ClientSize = new System.Drawing.Size(1086, 1021);
 			this.Controls.Add(this.btn_clear);
 			this.Controls.Add(this.pb_pictureBox);
 			this.Controls.Add(this.tb_result);
 			this.Controls.Add(this.btn_read);
+			this.DoubleBuffered = true;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Margin = new System.Windows.Forms.Padding(2);
+			this.MaximizeBox = false;
 			this.Name = "Form1";
-			this.Text = "Form1";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.Text = "Triangles";
 			((System.ComponentModel.ISupportInitialize)(this.pb_pictureBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

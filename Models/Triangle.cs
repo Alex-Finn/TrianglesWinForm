@@ -11,6 +11,10 @@ namespace TrianglesWinForm.Models
 {
 	public class Triangle
 	{
+		public int Color { get; }
+		public int NestingDegree { get; set; } = 0;
+
+
 		public Point[] Tops { get; set; }
 		//public Point TopA { get; set; }
 		//public Point TopB { get; set; }
@@ -26,12 +30,42 @@ namespace TrianglesWinForm.Models
 		//	await Task.Run(() => e.Graphics.DrawLine(pen, TopA, TopC));
 		//}
 
+		public bool AreIntersected( Triangle triangle )
+		{
+			if (   this.ArePointIntersected(triangle.Tops[0])
+				&& this.ArePointIntersected(triangle.Tops[1])
+				&& this.ArePointIntersected(triangle.Tops[2]) )
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		private bool ArePointIntersected( Point point )
+		{
+			int a = ( this.Tops[0].X - point.X ) * ( this.Tops[1].Y - this.Tops[0].Y ) - ( this.Tops[1].X - this.Tops[0].X ) * ( this.Tops[0].Y - point.Y );
+			int b = ( this.Tops[1].X - point.X ) * ( this.Tops[2].Y - this.Tops[1].Y ) - ( this.Tops[2].X - this.Tops[1].X ) * ( this.Tops[1].Y - point.Y );
+			int c = ( this.Tops[2].X - point.X ) * ( this.Tops[0].Y - this.Tops[2].Y ) - ( this.Tops[0].X - this.Tops[2].X ) * ( this.Tops[2].Y - point.Y );
+
+			if ( ( a >= 0 && b >= 0 && c >= 0 ) || ( a <= 0 && b <= 0 && c <= 0 ) )
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
 		public void Draw( PaintEventArgs e )
 		{
 			//	отрисовка с помощью массива вершин
 			if ( Tops?.Count() > 0 )
 			{
-				Pen pen = new Pen(Color.Black, 2);
+				Pen pen = Pens.Black;
 				Brush brush = Brushes.LightGreen;
 				e.Graphics.DrawPolygon(pen, Tops);
 				e.Graphics.FillPolygon(brush, Tops);
@@ -58,6 +92,7 @@ namespace TrianglesWinForm.Models
 			//	массивом
 			Tops = new Point[] { A, B, C };
 		}
+
 		public Triangle( int x1, int y1, int x2, int y2, int x3, int y3 )
 		{
 			// по вершинам
@@ -96,7 +131,7 @@ namespace TrianglesWinForm.Models
 			}
 			catch ( Exception ex )
 			{
-				MessageBox.Show($"Одна или несколько координат вершин треугольника считана не верно\n{ex.Message}");
+				MessageBox.Show($"Одна или несколько координат вершин треугольника считана не верно\nОшибка в следующей строке:\n{row}", caption: "Ошибка чтения");
 			}
 		}
 	}
