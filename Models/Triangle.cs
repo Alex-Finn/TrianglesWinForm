@@ -11,7 +11,7 @@ namespace TrianglesWinForm.Models
 {
 	public class Triangle
 	{
-		public int Color { get; }
+		public int GetColor { get; }
 		public int NestingDegree { get; set; } = 0;
 
 
@@ -66,7 +66,9 @@ namespace TrianglesWinForm.Models
 			if ( Tops?.Count() > 0 )
 			{
 				Pen pen = Pens.Black;
-				Brush brush = Brushes.LightGreen;
+				Brush brush = new SolidBrush(Color.FromArgb(255, 242, 0));
+				
+
 				e.Graphics.DrawPolygon(pen, Tops);
 				e.Graphics.FillPolygon(brush, Tops);
 			}
