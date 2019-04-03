@@ -66,7 +66,7 @@ namespace TrianglesWinForm
 
 			doPaint = true;
 			DoPaintOnPictureBox();
-			if ( triangles.FirstOrDefault(property => property.IsIntersected == true) == null )			
+			if ( triangles.FirstOrDefault(property => property.IsIntersected == true) != null )			
 				tb_result.Text = "ERROR";
 			else
 				tb_result.Text = ( store.maxNestingDegree + 1 ).ToString();
@@ -103,7 +103,7 @@ namespace TrianglesWinForm
 		private void Btn_clear_Click( object sender, EventArgs e )
 		{
 			doPaint = false;
-			tb_result.Text.Remove(0);
+			tb_result.Text = string.Empty;
 			DoPaintOnPictureBox();
 		}
 
