@@ -9,44 +9,72 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TrianglesWinForm.Models;
-//using Point = TrianglesWinForm.Models.Point;
 
 namespace TrianglesWinForm
 {
 	public partial class Form1 : Form
 	{
 		private List<Triangle> triangles;
-		private List<Point> points;
 		private bool doPaint;
+
+		private PropertyStorage prop;
 
 		public Form1()
 		{
 			InitializeComponent();
 			doPaint = false;
 			triangles = new List<Triangle>();
-			points = new List<Point>();
+			prop = new PropertyStorage();
+
+			pb_colorPicker.BackColor = prop.baseColor;
 			
-			pb_pictureBox.BackColor = Color.GhostWhite;
+			pb_pictureBox.BackColor = prop.baseColor;
 		}
 
-		private void ReadData()
+		private bool ReadData()
 		{
 			//	points.Add(new Point(100, 100));
 			//	points.Add(new Point(200, 200));
 
-			ReadFile();
+			if ( !ReadFile() )
+			{
+				return false;
+			}
+			for ( int i = 0 ; i < triangles.Count ; i++ )
+			{
+				for ( int j = 0 ; j < triangles.Count ; j++ )
+				{
+					if ( i == j )
+					{
+						continue;
+					}
+
+					if ( triangles[j].AreIntersected(triangles[i]) )
+					{
+						triangles[i].NestingDegree++;
+					}
+				}
+			}
+			triangles.Sort(( a, b ) => a.NestingDegree.CompareTo(b.NestingDegree));
+			prop.maxNestingDegree = triangles.Max(el => el.NestingDegree);
+			return true;
 		}
 
 		private void Btn_read_Click( object sender, EventArgs e )
 		{
+			if ( !ReadData() )
+			{
+				return;
+			}
+
 			doPaint = true;
-			ReadData();
 			DoPaintOnPictureBox();
 		}
 
 		private void DoPaintOnPictureBox()
 		{
-			pb_pictureBox.Invalidate();
+			pb_pictureBox.Refresh();
+			//pb_pictureBox.Invalidate();
 		}
 
 		private void Pb_pictureBox_Paint( object sender, PaintEventArgs e )
@@ -66,7 +94,7 @@ namespace TrianglesWinForm
 		{
 			foreach ( var triangle in triangles )
 			{
-				triangle.Draw(e);
+				triangle.Draw(e, prop);
 			}
 		}
 
@@ -76,7 +104,7 @@ namespace TrianglesWinForm
 			DoPaintOnPictureBox();
 		}
 
-		private void ReadFile()
+		private bool ReadFile()
 		{
 			try
 			{
@@ -105,12 +133,18 @@ namespace TrianglesWinForm
 							}
 						}
 					}
+					else
+					{
+						return false;
+					}
 				}
 			}
-			catch ( Exception ex )
-			{			
+			catch
+			{
 				MessageBox.Show($"При чтении файла возникла ошибка\nВозможно выбран файл некорректного формата", "Ошибка чтения");
+				return false;
 			}
+			return true;
 		}
 
 		private void pb_pictureBox_DoubleClick( object sender, EventArgs e )
@@ -118,6 +152,20 @@ namespace TrianglesWinForm
 			doPaint = true;
 			ReadData();
 			DoPaintOnPictureBox();
+		}
+
+		private void pb_colorPicker_Click( object sender, EventArgs e )
+		{
+			ColorDialog cDialog = new ColorDialog();
+			cDialog.AnyColor = true;
+			if ( cDialog.ShowDialog() == DialogResult.OK )
+			{
+				prop.baseColor = cDialog.Color;
+			}
+			else
+				return;
+			pb_colorPicker.BackColor = prop.baseColor;
+			pb_pictureBox.BackColor = prop.baseColor;
 		}
 	}
 }

@@ -32,15 +32,18 @@
 			this.tb_result = new System.Windows.Forms.TextBox();
 			this.pb_pictureBox = new System.Windows.Forms.PictureBox();
 			this.btn_clear = new System.Windows.Forms.Button();
+			this.pb_colorPicker = new System.Windows.Forms.PictureBox();
+			this.label1 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pb_pictureBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pb_colorPicker)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// btn_read
 			// 
-			this.btn_read.Location = new System.Drawing.Point(10, 11);
+			this.btn_read.Location = new System.Drawing.Point(10, 127);
 			this.btn_read.Margin = new System.Windows.Forms.Padding(2);
 			this.btn_read.Name = "btn_read";
-			this.btn_read.Size = new System.Drawing.Size(56, 19);
+			this.btn_read.Size = new System.Drawing.Size(78, 19);
 			this.btn_read.TabIndex = 0;
 			this.btn_read.Text = "Read";
 			this.btn_read.UseVisualStyleBackColor = true;
@@ -49,18 +52,19 @@
 			// tb_result
 			// 
 			this.tb_result.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.tb_result.Location = new System.Drawing.Point(10, 35);
+			this.tb_result.Location = new System.Drawing.Point(10, 11);
 			this.tb_result.Margin = new System.Windows.Forms.Padding(2);
 			this.tb_result.Name = "tb_result";
-			this.tb_result.Size = new System.Drawing.Size(57, 18);
+			this.tb_result.ReadOnly = true;
+			this.tb_result.Size = new System.Drawing.Size(78, 18);
 			this.tb_result.TabIndex = 1;
 			this.tb_result.Text = "Press \"Read\"";
-			this.tb_result.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.tb_result.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
 			// pb_pictureBox
 			// 
 			this.pb_pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pb_pictureBox.Location = new System.Drawing.Point(71, 11);
+			this.pb_pictureBox.Location = new System.Drawing.Point(106, 11);
 			this.pb_pictureBox.Margin = new System.Windows.Forms.Padding(2);
 			this.pb_pictureBox.Name = "pb_pictureBox";
 			this.pb_pictureBox.Size = new System.Drawing.Size(1000, 1000);
@@ -71,21 +75,43 @@
 			// 
 			// btn_clear
 			// 
-			this.btn_clear.Location = new System.Drawing.Point(10, 336);
+			this.btn_clear.Location = new System.Drawing.Point(10, 150);
 			this.btn_clear.Margin = new System.Windows.Forms.Padding(2);
 			this.btn_clear.Name = "btn_clear";
-			this.btn_clear.Size = new System.Drawing.Size(56, 19);
+			this.btn_clear.Size = new System.Drawing.Size(78, 19);
 			this.btn_clear.TabIndex = 3;
 			this.btn_clear.Text = "Clear";
 			this.btn_clear.UseVisualStyleBackColor = true;
 			this.btn_clear.Click += new System.EventHandler(this.Btn_clear_Click);
 			// 
+			// pb_colorPicker
+			// 
+			this.pb_colorPicker.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.pb_colorPicker.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pb_colorPicker.Location = new System.Drawing.Point(10, 101);
+			this.pb_colorPicker.Name = "pb_colorPicker";
+			this.pb_colorPicker.Size = new System.Drawing.Size(78, 21);
+			this.pb_colorPicker.TabIndex = 4;
+			this.pb_colorPicker.TabStop = false;
+			this.pb_colorPicker.Click += new System.EventHandler(this.pb_colorPicker_Click);
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(12, 85);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(69, 13);
+			this.label1.TabIndex = 5;
+			this.label1.Text = "Choose color";
+			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
 			// Form1
 			// 
-			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1086, 1021);
+			this.ClientSize = new System.Drawing.Size(1117, 1021);
+			this.Controls.Add(this.label1);
+			this.Controls.Add(this.pb_colorPicker);
 			this.Controls.Add(this.btn_clear);
 			this.Controls.Add(this.pb_pictureBox);
 			this.Controls.Add(this.tb_result);
@@ -96,8 +122,9 @@
 			this.MaximizeBox = false;
 			this.Name = "Form1";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Triangles";
+			this.Text = "Colored Triangles";
 			((System.ComponentModel.ISupportInitialize)(this.pb_pictureBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pb_colorPicker)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -109,6 +136,8 @@
 		private System.Windows.Forms.TextBox tb_result;
 		private System.Windows.Forms.PictureBox pb_pictureBox;
 		private System.Windows.Forms.Button btn_clear;
+		private System.Windows.Forms.PictureBox pb_colorPicker;
+		private System.Windows.Forms.Label label1;
 	}
 }
 

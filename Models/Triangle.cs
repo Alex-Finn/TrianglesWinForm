@@ -12,7 +12,7 @@ namespace TrianglesWinForm.Models
 	public class Triangle
 	{
 		public int GetColor { get; }
-		public int NestingDegree { get; set; } = 0;
+		public int NestingDegree { get; set; } = 1;
 
 
 		public Point[] Tops { get; set; }
@@ -60,13 +60,18 @@ namespace TrianglesWinForm.Models
 			}
 		}
 
-		public void Draw( PaintEventArgs e )
+		public void Draw( PaintEventArgs e, PropertyStorage property )
 		{
 			//	отрисовка с помощью массива вершин
 			if ( Tops?.Count() > 0 )
 			{
-				Pen pen = Pens.Black;
-				Brush brush = new SolidBrush(Color.FromArgb(255, 242, 0));
+				Color brushColor = Color.FromArgb(
+					property.baseColor.R - property.Rcomp * NestingDegree,
+					property.baseColor.G - property.Gcomp * NestingDegree,
+					property.baseColor.B - property.Bcomp * NestingDegree);
+
+				Pen pen = new Pen(Color.Black, 3F);
+				Brush brush = new SolidBrush(brushColor);
 				
 
 				e.Graphics.DrawPolygon(pen, Tops);
@@ -131,7 +136,7 @@ namespace TrianglesWinForm.Models
 					new Point(int.Parse(coords[4]), int.Parse(coords[5]))
 				};
 			}
-			catch ( Exception ex )
+			catch
 			{
 				MessageBox.Show($"Одна или несколько координат вершин треугольника считана не верно\nОшибка в следующей строке:\n{row}", caption: "Ошибка чтения");
 			}
