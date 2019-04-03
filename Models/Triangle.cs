@@ -11,30 +11,15 @@ namespace TrianglesWinForm.Models
 {
 	public class Triangle
 	{
-		public int GetColor { get; }
 		public int NestingDegree { get; set; } = 1;
+		public PointF[] Tops { get; set; }
+		public bool IsIntersected = false;
 
-
-		public Point[] Tops { get; set; }
-		//public Point TopA { get; set; }
-		//public Point TopB { get; set; }
-		//public Point TopC { get; set; }
-
-
-		//public async void DrawAsync( PaintEventArgs e )
-		//{
-		//	Pen pen = new Pen(Color.Black, 2);
-
-		//	await Task.Run(() => e.Graphics.DrawLine(pen, TopA, TopB));
-		//	await Task.Run(() => e.Graphics.DrawLine(pen, TopB, TopC));
-		//	await Task.Run(() => e.Graphics.DrawLine(pen, TopA, TopC));
-		//}
-
-		public bool AreIntersected( Triangle triangle )
+		public bool IsContainsTriangle( Triangle triangle )
 		{
-			if (   this.ArePointIntersected(triangle.Tops[0])
-				&& this.ArePointIntersected(triangle.Tops[1])
-				&& this.ArePointIntersected(triangle.Tops[2]) )
+			if ( this.IsContainsPoint(triangle.Tops[0])
+				&& this.IsContainsPoint(triangle.Tops[1])
+				&& this.IsContainsPoint(triangle.Tops[2]) )
 			{
 				return true;
 			}
@@ -44,11 +29,16 @@ namespace TrianglesWinForm.Models
 			}
 		}
 
-		private bool ArePointIntersected( Point point )
+		private bool IsContainsPoint( PointF point )
 		{
-			int a = ( this.Tops[0].X - point.X ) * ( this.Tops[1].Y - this.Tops[0].Y ) - ( this.Tops[1].X - this.Tops[0].X ) * ( this.Tops[0].Y - point.Y );
-			int b = ( this.Tops[1].X - point.X ) * ( this.Tops[2].Y - this.Tops[1].Y ) - ( this.Tops[2].X - this.Tops[1].X ) * ( this.Tops[1].Y - point.Y );
-			int c = ( this.Tops[2].X - point.X ) * ( this.Tops[0].Y - this.Tops[2].Y ) - ( this.Tops[0].X - this.Tops[2].X ) * ( this.Tops[2].Y - point.Y );
+			float a = ( this.Tops[0].X - point.X ) * ( this.Tops[1].Y - this.Tops[0].Y ) - ( this.Tops[1].X - this.Tops[0].X ) * ( this.Tops[0].Y - point.Y );
+			float b = ( this.Tops[1].X - point.X ) * ( this.Tops[2].Y - this.Tops[1].Y ) - ( this.Tops[2].X - this.Tops[1].X ) * ( this.Tops[1].Y - point.Y );
+			float c = ( this.Tops[2].X - point.X ) * ( this.Tops[0].Y - this.Tops[2].Y ) - ( this.Tops[0].X - this.Tops[2].X ) * ( this.Tops[2].Y - point.Y );
+
+			if ( a == 0 || b == 0 || c == 0 )
+			{
+				IsIntersected = true;
+			}
 
 			if ( ( a >= 0 && b >= 0 && c >= 0 ) || ( a <= 0 && b <= 0 && c <= 0 ) )
 			{
@@ -72,47 +62,29 @@ namespace TrianglesWinForm.Models
 
 				Pen pen = new Pen(Color.Black, 3F);
 				Brush brush = new SolidBrush(brushColor);
-				
 
 				e.Graphics.DrawPolygon(pen, Tops);
 				e.Graphics.FillPolygon(brush, Tops);
 			}
-
-			//	отрисовка с помощью отдельных вершин
-			//e.Graphics.DrawPolygon(pen, new Point[] { TopA, TopB, TopC });
-			//e.Graphics.FillPolygon(brush, new Point[] { TopA, TopB, TopC });
-
 		}
 
-		public Point Top( int x, int y )
+		public PointF Top( float x, float y )
 		{
-			return new Point(x, y);
+			return new PointF(x, y);
 		}
 
-		public Triangle( Point A, Point B, Point C )
+		public Triangle( PointF A, PointF B, PointF C )
 		{
-			// по вершинам
-			//TopA = A;
-			//TopB = B;
-			//TopC = C;
-
-			//	массивом
-			Tops = new Point[] { A, B, C };
+			Tops = new PointF[] { A, B, C };
 		}
 
-		public Triangle( int x1, int y1, int x2, int y2, int x3, int y3 )
+		public Triangle( float x1, float y1, float x2, float y2, float x3, float y3 )
 		{
-			// по вершинам
-			//TopA = new Point(x1, y1);
-			//TopB = new Point(x2, y2);
-			//TopC = new Point(x3, y3);
-
-			//	массивом
-			Tops = new Point[]
+			Tops = new PointF[]
 				{
-					new Point(x1, y1),
-					new Point(x2, y2),
-					new Point(x3, y3)
+					new PointF(x1, y1),
+					new PointF(x2, y2),
+					new PointF(x3, y3)
 				};
 		}
 
@@ -123,17 +95,11 @@ namespace TrianglesWinForm.Models
 
 			try
 			{
-				//	по вершинам
-				//TopA = new Point(int.Parse(coords[0]), int.Parse(coords[1]));
-				//TopB = new Point(int.Parse(coords[2]), int.Parse(coords[3]));
-				//TopC = new Point(int.Parse(coords[4]), int.Parse(coords[5]));
-
-				// массивом
-				Tops = new Point[]
+				Tops = new PointF[]
 				{
-					new Point(int.Parse(coords[0]), int.Parse(coords[1])),
-					new Point(int.Parse(coords[2]), int.Parse(coords[3])),
-					new Point(int.Parse(coords[4]), int.Parse(coords[5]))
+					new PointF(float.Parse(coords[0]), float.Parse(coords[1])),
+					new PointF(float.Parse(coords[2]), float.Parse(coords[3])),
+					new PointF(float.Parse(coords[4]), float.Parse(coords[5]))
 				};
 			}
 			catch

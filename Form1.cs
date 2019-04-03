@@ -17,25 +17,22 @@ namespace TrianglesWinForm
 		private List<Triangle> triangles;
 		private bool doPaint;
 
-		private PropertyStorage prop;
+		private PropertyStorage store;
 
 		public Form1()
 		{
 			InitializeComponent();
 			doPaint = false;
 			triangles = new List<Triangle>();
-			prop = new PropertyStorage();
+			store = new PropertyStorage();
 
-			pb_colorPicker.BackColor = prop.baseColor;
-			
-			pb_pictureBox.BackColor = prop.baseColor;
+			pb_colorPicker.BackColor = store.baseColor;
+
+			pb_pictureBox.BackColor = store.baseColor;
 		}
 
 		private bool ReadData()
 		{
-			//	points.Add(new Point(100, 100));
-			//	points.Add(new Point(200, 200));
-
 			if ( !ReadFile() )
 			{
 				return false;
@@ -49,14 +46,14 @@ namespace TrianglesWinForm
 						continue;
 					}
 
-					if ( triangles[j].AreIntersected(triangles[i]) )
+					if ( triangles[j].IsContainsTriangle(triangles[i]) )
 					{
 						triangles[i].NestingDegree++;
 					}
 				}
 			}
 			triangles.Sort(( a, b ) => a.NestingDegree.CompareTo(b.NestingDegree));
-			prop.maxNestingDegree = triangles.Max(el => el.NestingDegree);
+			store.maxNestingDegree = triangles.Max(el => el.NestingDegree);
 			return true;
 		}
 
@@ -69,6 +66,11 @@ namespace TrianglesWinForm
 
 			doPaint = true;
 			DoPaintOnPictureBox();
+			if ( triangles.FirstOrDefault(property => property.IsIntersected == true) == null )			
+				tb_result.Text = "ERROR";
+			else
+				tb_result.Text = ( store.maxNestingDegree + 1 ).ToString();
+			
 		}
 
 		private void DoPaintOnPictureBox()
@@ -94,13 +96,14 @@ namespace TrianglesWinForm
 		{
 			foreach ( var triangle in triangles )
 			{
-				triangle.Draw(e, prop);
+				triangle.Draw(e, store);
 			}
 		}
 
 		private void Btn_clear_Click( object sender, EventArgs e )
 		{
 			doPaint = false;
+			tb_result.Text.Remove(0);
 			DoPaintOnPictureBox();
 		}
 
@@ -117,7 +120,6 @@ namespace TrianglesWinForm
 
 					if ( openFileDialog.ShowDialog() == DialogResult.OK )
 					{
-						//Read the contents of the file into a stream
 						var fileStream = openFileDialog.OpenFile();
 
 						using ( StreamReader sr = new StreamReader(fileStream) )
@@ -156,16 +158,21 @@ namespace TrianglesWinForm
 
 		private void pb_colorPicker_Click( object sender, EventArgs e )
 		{
-			ColorDialog cDialog = new ColorDialog();
-			cDialog.AnyColor = true;
+			ColorDialog cDialog = new ColorDialog
+			{
+				AnyColor = true
+			};
 			if ( cDialog.ShowDialog() == DialogResult.OK )
 			{
-				prop.baseColor = cDialog.Color;
+				store.baseColor = cDialog.Color;
 			}
 			else
+			{
 				return;
-			pb_colorPicker.BackColor = prop.baseColor;
-			pb_pictureBox.BackColor = prop.baseColor;
+			}
+
+			pb_colorPicker.BackColor = store.baseColor;
+			pb_pictureBox.BackColor = store.baseColor;
 		}
 	}
 }

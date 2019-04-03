@@ -11,7 +11,7 @@ namespace TrianglesWinForm.Models
 	{
 		public Color baseColor { get; set; }
 		public int maxNestingDegree { get; set; }
-		private const int koef = 50;
+		private const int koef = 70;
 
 		public PropertyStorage()
 		{
