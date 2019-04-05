@@ -31,9 +31,13 @@ namespace TrianglesWinForm.Models
 
 		private bool IsContainsPoint( PointF point )
 		{
-			float a = ( this.Tops[0].X - point.X ) * ( this.Tops[1].Y - this.Tops[0].Y ) - ( this.Tops[1].X - this.Tops[0].X ) * ( this.Tops[0].Y - point.Y );
-			float b = ( this.Tops[1].X - point.X ) * ( this.Tops[2].Y - this.Tops[1].Y ) - ( this.Tops[2].X - this.Tops[1].X ) * ( this.Tops[1].Y - point.Y );
-			float c = ( this.Tops[2].X - point.X ) * ( this.Tops[0].Y - this.Tops[2].Y ) - ( this.Tops[0].X - this.Tops[2].X ) * ( this.Tops[2].Y - point.Y );
+			IsIntersected = false;
+			float a = ( this.Tops[0].X - point.X ) * ( this.Tops[1].Y - this.Tops[0].Y ) 
+				- ( this.Tops[1].X - this.Tops[0].X ) * ( this.Tops[0].Y - point.Y );
+			float b = ( this.Tops[1].X - point.X ) * ( this.Tops[2].Y - this.Tops[1].Y ) 
+				- ( this.Tops[2].X - this.Tops[1].X ) * ( this.Tops[1].Y - point.Y );
+			float c = ( this.Tops[2].X - point.X ) * ( this.Tops[0].Y - this.Tops[2].Y ) 
+				- ( this.Tops[0].X - this.Tops[2].X ) * ( this.Tops[2].Y - point.Y );
 
 			if ( a == 0 || b == 0 || c == 0 )
 			{
@@ -101,10 +105,15 @@ namespace TrianglesWinForm.Models
 					new PointF(float.Parse(coords[2]), float.Parse(coords[3])),
 					new PointF(float.Parse(coords[4]), float.Parse(coords[5]))
 				};
+				foreach ( var item in Tops )
+				{
+					if ( item.X > 1000 || item.X < 0 || item.Y > 1000 || item.Y < 0 )
+						throw new Exception();
+				}
 			}
 			catch
 			{
-				MessageBox.Show($"Одна или несколько координат вершин треугольника считана не верно\nОшибка в следующей строке:\n{row}", caption: "Ошибка чтения");
+				MessageBox.Show($"Не правильный формат входных данных.\nОшибка в следующей строке:\n{row}", caption: "Ошибка чтения");
 			}
 		}
 	}

@@ -75,8 +75,8 @@ namespace TrianglesWinForm
 
 		private void DoPaintOnPictureBox()
 		{
-			pb_pictureBox.Refresh();
-			//pb_pictureBox.Invalidate();
+			//pb_pictureBox.Refresh();
+			pb_pictureBox.Invalidate();
 		}
 
 		private void Pb_pictureBox_Paint( object sender, PaintEventArgs e )
