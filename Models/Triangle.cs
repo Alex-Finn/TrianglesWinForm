@@ -17,9 +17,9 @@ namespace TrianglesWinForm.Models
 
 		public bool IsContainsTriangle( Triangle triangle )
 		{
-			if ( this.IsContainsPoint(triangle.Tops[0])
-				&& this.IsContainsPoint(triangle.Tops[1])
-				&& this.IsContainsPoint(triangle.Tops[2]) )
+			if ( this.IsVectorIntersected(triangle.Tops[0])
+				&& this.IsVectorIntersected(triangle.Tops[1])
+				&& this.IsVectorIntersected(triangle.Tops[2]) )
 			{
 				return true;
 			}
@@ -32,12 +32,22 @@ namespace TrianglesWinForm.Models
 		private bool IsContainsPoint( PointF point )
 		{
 			IsIntersected = false;
-			float a = ( this.Tops[0].X - point.X ) * ( this.Tops[1].Y - this.Tops[0].Y ) 
-				- ( this.Tops[1].X - this.Tops[0].X ) * ( this.Tops[0].Y - point.Y );
-			float b = ( this.Tops[1].X - point.X ) * ( this.Tops[2].Y - this.Tops[1].Y ) 
-				- ( this.Tops[2].X - this.Tops[1].X ) * ( this.Tops[1].Y - point.Y );
-			float c = ( this.Tops[2].X - point.X ) * ( this.Tops[0].Y - this.Tops[2].Y ) 
-				- ( this.Tops[0].X - this.Tops[2].X ) * ( this.Tops[2].Y - point.Y );
+			//== направление движения
+			//float a = ( this.Tops[0].X - point.X ) * ( this.Tops[1].Y - this.Tops[0].Y ) 
+			//	- ( this.Tops[1].X - this.Tops[0].X ) * ( this.Tops[0].Y - point.Y );
+			//float b = ( this.Tops[1].X - point.X ) * ( this.Tops[2].Y - this.Tops[1].Y ) 
+			//	- ( this.Tops[2].X - this.Tops[1].X ) * ( this.Tops[1].Y - point.Y );
+			//float c = ( this.Tops[2].X - point.X ) * ( this.Tops[0].Y - this.Tops[2].Y ) 
+			//	- ( this.Tops[0].X - this.Tops[2].X ) * ( this.Tops[2].Y - point.Y );
+
+			float a = ( this.Tops[2].X - point.X ) * ( this.Tops[1].Y - this.Tops[2].Y )
+				- ( this.Tops[1].X - this.Tops[2].X ) * ( this.Tops[2].Y - point.Y );
+
+			float b = ( this.Tops[1].X - point.X ) * ( this.Tops[0].Y - this.Tops[1].Y )
+				- ( this.Tops[0].X - this.Tops[1].X ) * ( this.Tops[1].Y - point.Y );
+
+			float c = ( this.Tops[0].X - point.X ) * ( this.Tops[2].Y - this.Tops[0].Y )
+				- ( this.Tops[2].X - this.Tops[0].X ) * ( this.Tops[0].Y - point.Y );
 
 			if ( a == 0 || b == 0 || c == 0 )
 			{
@@ -52,6 +62,31 @@ namespace TrianglesWinForm.Models
 			{
 				return false;
 			}
+		}
+
+		private bool IsVectorIntersected( PointF point )
+		{
+			bool result = false;
+			float Bx, By, Cx, Cy, Px, Py, m, l;
+			Bx = Tops[1].X - Tops[0].X;
+			By = Tops[1].Y - Tops[0].Y;
+			Cx = Tops[2].X - Tops[0].X;
+			Cy = Tops[2].Y - Tops[0].Y;
+			Px = point.X - Tops[0].X;
+			Py = point.Y - Tops[0].Y;
+
+			m = ( Px * By - Bx * Py ) / ( Cx * By - By * Cy );
+			if ( m >= 0 && m <= 1 )
+			{
+				l = ( Px - m * Cx ) / Bx;
+				if ( l >= 0 && ( ( m + l ) <= 1 ) )
+				{
+					if ( l == 0 || m == 0 || l == 1 || m == 1 || ( l + m ) == 1 )
+						IsIntersected = true;
+					result = true;
+				}
+			}
+			return result;
 		}
 
 		public void Draw( PaintEventArgs e, PropertyStorage property )
