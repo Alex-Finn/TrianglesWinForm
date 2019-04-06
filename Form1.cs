@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TrianglesWinForm.Models;
@@ -27,7 +28,6 @@ namespace TrianglesWinForm
 			store = new PropertyStorage();
 
 			pb_colorPicker.BackColor = store.baseColor;
-
 			pb_pictureBox.BackColor = store.baseColor;
 		}
 
@@ -46,9 +46,19 @@ namespace TrianglesWinForm
 						continue;
 					}
 
-					if ( triangles[j].IsContainsTriangle(triangles[i]) )
+					try
 					{
-						triangles[i].NestingDegree++;
+						if ( triangles[j].IsContainsTriangle(triangles[i]) )
+						{
+							triangles[i].NestingDegree++;
+						}
+					}
+					catch
+					{
+						tb_result.Text = "ERROR";
+						doPaint = false;
+						DoPaintOnPictureBox();
+						return false;
 					}
 				}
 			}
@@ -66,12 +76,15 @@ namespace TrianglesWinForm
 
 			doPaint = true;
 			DoPaintOnPictureBox();
-			if ( triangles.FirstOrDefault(property => property.IsIntersected == true) != null )			
+			if ( triangles.FirstOrDefault(property => property.IsIntersected == true) != null )
+			{
 				tb_result.Text = "ERROR";
+			}
 			else
+			{
 				tb_result.Text = ( store.maxNestingDegree + 1 ).ToString();
-			
-		}
+			}
+		}	
 
 		private void DoPaintOnPictureBox()
 		{

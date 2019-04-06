@@ -17,9 +17,19 @@ namespace TrianglesWinForm.Models
 
 		public bool IsContainsTriangle( Triangle triangle )
 		{
-			if ( this.IsVectorIntersected(triangle.Tops[0])
-				&& this.IsVectorIntersected(triangle.Tops[1])
-				&& this.IsVectorIntersected(triangle.Tops[2]) )
+			bool condition1 = this.IsContainsPoint(triangle.Tops[0]);
+			bool condition2 = this.IsContainsPoint(triangle.Tops[1]);
+			bool condition3 = this.IsContainsPoint(triangle.Tops[2]);
+
+			if ( ( condition1 && condition2 && !condition3 )
+				|| ( condition1 && !condition2 && condition3 )
+				|| ( !condition1 && condition2 && condition3 ) )
+			{
+				IsIntersected = true;
+				throw new Exception();
+			}
+
+			if ( condition1 && condition2 && condition3 )
 			{
 				return true;
 			}
@@ -31,7 +41,6 @@ namespace TrianglesWinForm.Models
 
 		private bool IsContainsPoint( PointF point )
 		{
-			IsIntersected = false;
 			//== направление движения
 			//float a = ( this.Tops[0].X - point.X ) * ( this.Tops[1].Y - this.Tops[0].Y ) 
 			//	- ( this.Tops[1].X - this.Tops[0].X ) * ( this.Tops[0].Y - point.Y );
@@ -49,10 +58,10 @@ namespace TrianglesWinForm.Models
 			float c = ( this.Tops[0].X - point.X ) * ( this.Tops[2].Y - this.Tops[0].Y )
 				- ( this.Tops[2].X - this.Tops[0].X ) * ( this.Tops[0].Y - point.Y );
 
-			if ( a == 0 || b == 0 || c == 0 )
-			{
-				IsIntersected = true;
-			}
+			//if ( a == 0 || b == 0 || c == 0 )
+			//{
+			//	IsIntersected = true;
+			//}
 
 			if ( ( a >= 0 && b >= 0 && c >= 0 ) || ( a <= 0 && b <= 0 && c <= 0 ) )
 			{
@@ -63,32 +72,7 @@ namespace TrianglesWinForm.Models
 				return false;
 			}
 		}
-
-		private bool IsVectorIntersected( PointF point )
-		{
-			bool result = false;
-			float Bx, By, Cx, Cy, Px, Py, m, l;
-			Bx = Tops[1].X - Tops[0].X;
-			By = Tops[1].Y - Tops[0].Y;
-			Cx = Tops[2].X - Tops[0].X;
-			Cy = Tops[2].Y - Tops[0].Y;
-			Px = point.X - Tops[0].X;
-			Py = point.Y - Tops[0].Y;
-
-			m = ( Px * By - Bx * Py ) / ( Cx * By - By * Cy );
-			if ( m >= 0 && m <= 1 )
-			{
-				l = ( Px - m * Cx ) / Bx;
-				if ( l >= 0 && ( ( m + l ) <= 1 ) )
-				{
-					if ( l == 0 || m == 0 || l == 1 || m == 1 || ( l + m ) == 1 )
-						IsIntersected = true;
-					result = true;
-				}
-			}
-			return result;
-		}
-
+		
 		public void Draw( PaintEventArgs e, PropertyStorage property )
 		{
 			//	отрисовка с помощью массива вершин
@@ -98,8 +82,11 @@ namespace TrianglesWinForm.Models
 					property.baseColor.R - property.Rcomp * NestingDegree,
 					property.baseColor.G - property.Gcomp * NestingDegree,
 					property.baseColor.B - property.Bcomp * NestingDegree);
+				Pen pen;
+				pen = IsIntersected
+					? new Pen(Color.Red, 3F)
+					: new Pen(Color.Black, 3F);
 
-				Pen pen = new Pen(Color.Black, 3F);
 				Brush brush = new SolidBrush(brushColor);
 
 				e.Graphics.DrawPolygon(pen, Tops);
@@ -143,7 +130,9 @@ namespace TrianglesWinForm.Models
 				foreach ( var item in Tops )
 				{
 					if ( item.X > 1000 || item.X < 0 || item.Y > 1000 || item.Y < 0 )
+					{
 						throw new Exception();
+					}
 				}
 			}
 			catch
