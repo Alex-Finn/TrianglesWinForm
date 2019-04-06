@@ -41,10 +41,10 @@
 			// 
 			// btn_read
 			// 
-			this.btn_read.Location = new System.Drawing.Point(10, 178);
+			this.btn_read.Location = new System.Drawing.Point(10, 194);
 			this.btn_read.Margin = new System.Windows.Forms.Padding(2);
 			this.btn_read.Name = "btn_read";
-			this.btn_read.Size = new System.Drawing.Size(78, 19);
+			this.btn_read.Size = new System.Drawing.Size(90, 25);
 			this.btn_read.TabIndex = 0;
 			this.btn_read.Text = "Load";
 			this.btn_read.UseVisualStyleBackColor = true;
@@ -57,7 +57,7 @@
 			this.tb_result.Margin = new System.Windows.Forms.Padding(2);
 			this.tb_result.Name = "tb_result";
 			this.tb_result.ReadOnly = true;
-			this.tb_result.Size = new System.Drawing.Size(78, 29);
+			this.tb_result.Size = new System.Drawing.Size(90, 29);
 			this.tb_result.TabIndex = 1;
 			this.tb_result.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
@@ -71,14 +71,13 @@
 			this.pb_pictureBox.TabIndex = 2;
 			this.pb_pictureBox.TabStop = false;
 			this.pb_pictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.Pb_pictureBox_Paint);
-			this.pb_pictureBox.DoubleClick += new System.EventHandler(this.pb_pictureBox_DoubleClick);
 			// 
 			// btn_clear
 			// 
-			this.btn_clear.Location = new System.Drawing.Point(10, 201);
+			this.btn_clear.Location = new System.Drawing.Point(10, 223);
 			this.btn_clear.Margin = new System.Windows.Forms.Padding(2);
 			this.btn_clear.Name = "btn_clear";
-			this.btn_clear.Size = new System.Drawing.Size(78, 19);
+			this.btn_clear.Size = new System.Drawing.Size(90, 25);
 			this.btn_clear.TabIndex = 3;
 			this.btn_clear.Text = "Clear";
 			this.btn_clear.UseVisualStyleBackColor = true;
@@ -88,9 +87,9 @@
 			// 
 			this.pb_colorPicker.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.pb_colorPicker.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.pb_colorPicker.Location = new System.Drawing.Point(10, 152);
+			this.pb_colorPicker.Location = new System.Drawing.Point(11, 152);
 			this.pb_colorPicker.Name = "pb_colorPicker";
-			this.pb_colorPicker.Size = new System.Drawing.Size(78, 21);
+			this.pb_colorPicker.Size = new System.Drawing.Size(90, 25);
 			this.pb_colorPicker.TabIndex = 4;
 			this.pb_colorPicker.TabStop = false;
 			this.pb_colorPicker.Click += new System.EventHandler(this.pb_colorPicker_Click);
@@ -98,9 +97,10 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
+			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.label1.Location = new System.Drawing.Point(12, 136);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(69, 13);
+			this.label1.Size = new System.Drawing.Size(88, 16);
 			this.label1.TabIndex = 5;
 			this.label1.Text = "Choose color";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

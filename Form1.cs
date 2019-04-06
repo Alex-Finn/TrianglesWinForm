@@ -15,9 +15,17 @@ namespace TrianglesWinForm
 {
 	public partial class Form1 : Form
 	{
+		/// <summary>
+		/// Коллекция треугольников для отображения
+		/// </summary>
 		private List<Triangle> triangles;
+		/// <summary>
+		/// Значение, показывающее следует ли отрисовывать изображение
+		/// </summary>
 		private bool doPaint;
-
+		/// <summary>
+		/// Объект, хранящий общие данные проекта
+		/// </summary>
 		private PropertyStorage store;
 
 		public Form1()
@@ -31,6 +39,10 @@ namespace TrianglesWinForm
 			pb_pictureBox.BackColor = store.baseColor;
 		}
 
+		/// <summary>
+		/// Метод, получающий данные для отрисовки треугольников и подсчёта количества оттенков
+		/// </summary>
+		/// <returns></returns>
 		private bool ReadData()
 		{
 			if ( !ReadFile() )
@@ -48,6 +60,7 @@ namespace TrianglesWinForm
 
 					try
 					{
+						//	проверка вхождения треугольников друг в друга
 						if ( triangles[j].IsContainsTriangle(triangles[i]) )
 						{
 							triangles[i].NestingDegree++;
@@ -57,7 +70,7 @@ namespace TrianglesWinForm
 					{
 						tb_result.Text = "ERROR";
 						doPaint = false;
-						DoPaintOnPictureBox();
+						pb_pictureBox.Invalidate();
 						return false;
 					}
 				}
@@ -67,31 +80,34 @@ namespace TrianglesWinForm
 			return true;
 		}
 
+		/// <summary>
+		/// Обработка события нажатия кнопки "Read"
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Btn_read_Click( object sender, EventArgs e )
 		{
-			if ( !ReadData() )
+			tb_result.Text = "Loading...";
+			btn_read.Enabled = false;
+			btn_clear.Enabled = false;
+
+			if ( !ReadData() )	//	если данные считаны с ошибками, либо если присутствуют пересекающиеся треугольники
 			{
 				return;
 			}
 
 			doPaint = true;
-			DoPaintOnPictureBox();
-			if ( triangles.FirstOrDefault(property => property.IsIntersected == true) != null )
-			{
-				tb_result.Text = "ERROR";
-			}
-			else
-			{
-				tb_result.Text = ( store.maxNestingDegree + 1 ).ToString();
-			}
-		}	
-
-		private void DoPaintOnPictureBox()
-		{
-			//pb_pictureBox.Refresh();
 			pb_pictureBox.Invalidate();
-		}
+			tb_result.Text = ( store.maxNestingDegree + 1 ).ToString();
+			btn_read.Enabled = true;
+			btn_clear.Enabled = true;
+		}		
 
+		/// <summary>
+		/// Метод отрисовки изображения на элементе "PictureBox"
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Pb_pictureBox_Paint( object sender, PaintEventArgs e )
 		{
 			if ( doPaint == true )
@@ -103,8 +119,14 @@ namespace TrianglesWinForm
 				e.Graphics.Clear(pb_pictureBox.BackColor);
 				triangles.Clear();
 			}
+			btn_read.Enabled = true;
+			btn_clear.Enabled = true;
 		}
 
+		/// <summary>
+		/// Метод, запускающий отрисовку треугольников коллекции
+		/// </summary>
+		/// <param name="e"></param>
 		private void DrawTriangles( PaintEventArgs e )
 		{
 			foreach ( var triangle in triangles )
@@ -113,13 +135,22 @@ namespace TrianglesWinForm
 			}
 		}
 
+		/// <summary>
+		/// Обработка события нажатия на кнопку "Clear"
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Btn_clear_Click( object sender, EventArgs e )
 		{
 			doPaint = false;
 			tb_result.Text = string.Empty;
-			DoPaintOnPictureBox();
+			pb_pictureBox.Invalidate();
 		}
 
+		/// <summary>
+		/// Метод работы с входным файлом, заполняющий коллекцию треугольников
+		/// </summary>
+		/// <returns></returns>
 		private bool ReadFile()
 		{
 			try
@@ -150,6 +181,9 @@ namespace TrianglesWinForm
 					}
 					else
 					{
+						tb_result.Text = string.Empty;
+						btn_read.Enabled = true;
+						btn_clear.Enabled = true;
 						return false;
 					}
 				}
@@ -157,18 +191,20 @@ namespace TrianglesWinForm
 			catch
 			{
 				MessageBox.Show($"При чтении файла возникла ошибка\nВозможно выбран файл некорректного формата", "Ошибка чтения");
+				tb_result.Text = string.Empty;
+				btn_read.Enabled = true;
+				btn_clear.Enabled = true;
 				return false;
 			}
+
 			return true;
 		}
 
-		private void pb_pictureBox_DoubleClick( object sender, EventArgs e )
-		{
-			doPaint = true;
-			ReadData();
-			DoPaintOnPictureBox();
-		}
-
+		/// <summary>
+		/// Метод, позволяющий выбрать базовый цвет для окрашивания треугольников
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void pb_colorPicker_Click( object sender, EventArgs e )
 		{
 			ColorDialog cDialog = new ColorDialog
