@@ -157,7 +157,7 @@ namespace TrianglesWinForm
 			{
 				using ( OpenFileDialog openFileDialog = new OpenFileDialog() )
 				{
-					openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+					//openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
 					openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
 					openFileDialog.FilterIndex = 1;
 					openFileDialog.RestoreDirectory = true;
